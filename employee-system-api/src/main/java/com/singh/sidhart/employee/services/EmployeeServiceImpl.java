@@ -41,4 +41,34 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         return employees;
     }
+
+    @Override
+    public boolean deleteEmployee(Long id) {
+        EmployeeEntity employee = employeeRepo.findById(id).get();
+        employeeRepo.delete(employee);
+
+        return true;
+    }
+
+    @Override
+    public Employee getEmployeeById(Long id) {
+        EmployeeEntity employeeEntity
+                = employeeRepo.findById(id).get();
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeEntity, employee);
+        return employee;
+    }
+
+    @Override
+    public Employee updateEmployee(Long id, Employee employee) {
+        EmployeeEntity employeeEntity
+                = employeeRepo.findById(id).get();
+        employeeEntity.setEmailId(employee.getEmailId());
+        employeeEntity.setFirstName(employee.getFirstName());
+        employeeEntity.setLastName(employee.getLastName());
+
+        employeeRepo.save(employeeEntity);
+        return employee;
+    }
+
 }
